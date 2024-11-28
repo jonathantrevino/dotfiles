@@ -40,6 +40,24 @@ return {
 		},
 	},
 	{
+		"folke/which-key.nvim",
+		event = "VeryLazy",
+		opts = {
+			-- your configuration comes here
+			-- or leave it empty to use the default settings
+			-- refer to the configuration section below
+		},
+		keys = {
+			{
+				"<leader>?",
+				function()
+					require("which-key").show({ global = false })
+				end,
+				desc = "Buffer Local Keymaps (which-key)",
+			},
+		},
+	},
+	{
 		"rcarriga/nvim-notify",
 		opts = {
 			level = 3,
@@ -51,5 +69,34 @@ return {
 		"lukas-reineke/indent-blankline.nvim",
 		event = { "BufReadPre", "BufNewFile" },
 		main = "ibl",
+	},
+	-- Add these plugin configurations to your LazyVim plugin configuration file
+	{
+		"echasnovski/mini.hipatterns",
+		version = false, -- Automatically use the latest version
+		config = function()
+			local hipatterns = require("mini.hipatterns")
+			hipatterns.setup({
+				highlighters = {
+					-- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
+					fixme = { pattern = "%f[%w]()FIXME()%f[%W]", group = "MiniHipatternsFixme" },
+					hack = { pattern = "%f[%w]()HACK()%f[%W]", group = "MiniHipatternsHack" },
+					todo = { pattern = "%f[%w]()TODO()%f[%W]", group = "MiniHipatternsTodo" },
+					note = { pattern = "%f[%w]()NOTE()%f[%W]", group = "MiniHipatternsNote" },
+
+					-- Highlight hex color strings (`#rrggbb`) using that color
+					hex_color = hipatterns.gen_highlighter.hex_color(),
+				},
+			})
+		end,
+	},
+	{
+		"echasnovski/mini.icons",
+		version = false, -- Automatically use the latest version
+		config = function()
+			require("mini.icons").setup({
+				-- You can add custom options here if needed.
+			})
+		end,
 	},
 }
