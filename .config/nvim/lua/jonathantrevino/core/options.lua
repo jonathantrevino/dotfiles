@@ -27,3 +27,6 @@ vim.opt.signcolumn = "yes"
 -- search
 vim.o.ignorecase = true
 vim.o.smartcase = true
+
+-- required for obsidian ui
+vim.opt.conceallevel = 2

@@ -22,7 +22,7 @@ shell /bin/zsh
 #: <https://sw.kovidgoyal.net/kitty/kittens/choose-fonts/#font-spec-
 #: syntax>.
 
-font_size 18.0
+font_size 16.0
 
 #: Font size (in pts).
 
@@ -100,9 +100,9 @@ font_size 18.0
 #: fallback fonts.
 
 #: Some fonts might have features worthwhile in a terminal. For
-#: example, Fira Code includes a discretionary feature, zero, which in
+#: example, Fira Code include dark-theme.conf
 #: that font changes the appearance of the zero (0), to make it more
-#: easily distinguishable from Ø. Fira Code also includes other
+#: easily distinguishable from Ø. Fira Code also include dark-theme.conf
 #: discretionary features known as Stylistic Sets which have the tags
 #: ss01 through ss20.
 
@@ -252,7 +252,7 @@ font_size 18.0
 #: takes precedence. Also, the cursor colors are modified if the cell
 #: background and foreground colors have very low contrast. Note that
 #: some themes set this value, so if you want to override it, place
-#: your value after the lines where the theme file is included.
+#: your value after the lines where the theme file is include dark-theme.conf
 
 # cursor_text_color #111111
 
@@ -261,7 +261,7 @@ font_size 18.0
 #: special keyword: `background`. Note that if cursor is set to none
 #: then this option is ignored. Note that some themes set this value,
 #: so if you want to override it, place your value after the lines
-#: where the theme file is included.
+#: where the theme file is include dark-theme.conf
 
 cursor_shape block
 
@@ -304,7 +304,7 @@ cursor_shape block
 #: uses extra power as it means the screen is redrawn multiple times
 #: per blink interval. See also, cursor_stop_blinking_after.
 
-# cursor_stop_blinking_after 15.0
+cursor_stop_blinking_after 15.0
 
 #: Stop blinking cursor after the specified number of seconds of
 #: keyboard inactivity. Set to zero to never stop blinking.
@@ -324,7 +324,7 @@ cursor_shape block
 #: is changed it will only affect newly created windows, not existing
 #: ones.
 
-scrollback_indicator_opacity 0.98
+# scrollback_indicator_opacity 0.98
 
 #: The opacity of the scrollback indicator which is a small colored
 #: rectangle that moves along the right hand side of the window as you
@@ -870,7 +870,7 @@ remember_window_size  yes
 #: set the vertical and horizontal sides. Three values set top,
 #: horizontal and bottom. Four values set top, right, bottom and left.
 
-window_padding_width 16
+window_padding_width 16 
 
 #: The window padding (in pts) (blank area between the text and the
 #: window border). A single value sets all four sides. Two values set
@@ -915,7 +915,7 @@ window_padding_width 16
 #: Fade the text in inactive windows by the specified amount (a number
 #: between zero and one, with zero being fully faded).
 
-hide_window_decorations yes
+hide_window_decorations titlebar-only
 
 #: Hide the window decorations (title-bar and window borders) with
 #: yes. On macOS, titlebar-only and titlebar-and-corners can be used
@@ -1105,7 +1105,7 @@ confirm_os_window_close -1
 
 #: A template to render the tab title. The default just renders the
 #: title with optional symbols for bell and activity. If you wish to
-#: include the tab-index as well, use something like: {index}:{title}.
+#: include dark-theme.conf
 #: Useful if you have shortcuts mapped for goto_tab N. If you prefer
 #: to see the index as a superscript, use {sup.index}. All data
 #: available is:
@@ -1180,7 +1180,7 @@ confirm_os_window_close -1
 
 #: The foreground and background colors.
 
-# background_opacity 1.0
+background_opacity 1
 
 #: The opacity of the background. A number between zero and one, where
 #: one is opaque and zero is fully transparent. This will only work if
@@ -1205,7 +1205,7 @@ confirm_os_window_close -1
 #: will only work if dynamic_background_opacity was enabled in the
 #: original config.
 
-background_blur 56
+background_blur 36
 
 #: Set to a positive value to enable background blur (blurring of the
 #: visuals behind a transparent window) on platforms that support it.
@@ -1427,7 +1427,7 @@ background_blur 56
 #: See rc_custom_auth <https://sw.kovidgoyal.net/kitty/remote-
 #: control/#rc-custom-auth> for details.
 
-# allow_remote_control no
+allow_remote_control yes
 
 #: Allow other programs to control kitty. If you turn this on, other
 #: programs can control all aspects of kitty, including sending text
@@ -1600,7 +1600,7 @@ background_blur 56
 #: special value of ask means that kitty will ask before opening the
 #: link when clicked.
 
-# shell_integration enabled
+shell_integration no-cursor
 
 #: Enable shell integration on supported shells. This enables features
 #: such as jumping to previous prompts, browsing the output of the
@@ -1765,7 +1765,7 @@ background_blur 56
 #: background_opacity. If you want to use both, you are probably
 #: better off just hiding the titlebar with hide_window_decorations.
 
-# macos_option_as_alt no
+macos_option_as_alt no
 
 #: Use the Option key as an Alt key on macOS. With this set to no,
 #: kitty will use the macOS native Option+Key to enter Unicode
@@ -2592,3 +2592,9 @@ background_blur 56
 #: }}}
 
 #: }}}
+
+
+# BEGIN_KITTY_THEME
+# GitHub Light Colorblind
+include dark-theme.conf
+# END_KITTY_THEME

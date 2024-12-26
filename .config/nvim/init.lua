@@ -1,2 +1,2 @@
-require('jonathantrevino.core')
-require('jonathantrevino.lazy')
+require("jonathantrevino.core")
+require("jonathantrevino.lazy")

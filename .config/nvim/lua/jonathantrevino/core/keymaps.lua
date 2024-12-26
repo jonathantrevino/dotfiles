@@ -55,7 +55,8 @@ map("n", ";h", "<cmd>Telescope help_tags<cr>", opts)
 -- Obsidian
 map("n", "<leader>oo", ":cd /Users/jonathantrevino/workspace/notes<cr>", opts)
 map("n", "<leader>on", ":ObsidianTemplate general<cr> :lua vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]])<cr>", opts)
-map("n", "<leader>of", ":s/\\(# \\)[^_]*_/\\1/e | s/-/ /ge<cr>", opts)
+map("n", "<leader>oj", ":ObsidianTemplate job-hunting<cr> :lua vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]])<cr>", opts)
+map("n", "<leader>of", ":s/\\(# \\)[^_]*_/\\1/e<cr>", opts)
 map("n", "<leader>os", ':Telescope find_files search_dirs={"~/workspace/notes"} path_display={"tail"}<cr>', opts)
 map(
 	"n",

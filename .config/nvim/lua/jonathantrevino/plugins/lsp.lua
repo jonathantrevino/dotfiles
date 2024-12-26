@@ -161,18 +161,6 @@ return {
 
 		-- Define your LSP servers
 		local servers = {
-			rust_analyzer = {
-				settings = {
-					["rust-analyzer"] = {
-						cargo = {
-							allFeatures = true,
-						},
-						checkOnSave = {
-							command = "clippy",
-						},
-					},
-				},
-			},
 			ts_ls = {},
 			ruff = {},
 			pylsp = {
@@ -218,18 +206,10 @@ return {
 		-- Ensure the servers and tools above are installed
 		require("mason").setup()
 		local ensure_installed = vim.tbl_keys(servers or {})
-		vim.list_extend(ensure_installed, { "stylua", "rust-analyzer" }) -- Include stylua and rust-analyzer explicitly
 		require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
 		require("mason-lspconfig").setup({
 			handlers = {
-				-- Setup rust_analyzer explicitly
-				rust_analyzer = function()
-					local rust_opts = servers.rust_analyzer
-					rust_opts.capabilities =
-						vim.tbl_deep_extend("force", {}, capabilities, rust_opts.capabilities or {})
-					require("lspconfig").rust_analyzer.setup(rust_opts)
-				end,
 				-- Fallback handler for other servers
 				function(server_name)
 					local server = servers[server_name] or {}
