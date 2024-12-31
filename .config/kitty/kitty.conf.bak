@@ -100,9 +100,9 @@ font_size 16.0
 #: fallback fonts.
 
 #: Some fonts might have features worthwhile in a terminal. For
-#: example, Fira Code include dark-theme.conf
+#: example, Fira Code include light-theme.conf
 #: that font changes the appearance of the zero (0), to make it more
-#: easily distinguishable from Ø. Fira Code also include dark-theme.conf
+#: easily distinguishable from Ø. Fira Code also include light-theme.conf
 #: discretionary features known as Stylistic Sets which have the tags
 #: ss01 through ss20.
 
@@ -252,7 +252,7 @@ font_size 16.0
 #: takes precedence. Also, the cursor colors are modified if the cell
 #: background and foreground colors have very low contrast. Note that
 #: some themes set this value, so if you want to override it, place
-#: your value after the lines where the theme file is include dark-theme.conf
+#: your value after the lines where the theme file is include light-theme.conf
 
 # cursor_text_color #111111
 
@@ -261,7 +261,7 @@ font_size 16.0
 #: special keyword: `background`. Note that if cursor is set to none
 #: then this option is ignored. Note that some themes set this value,
 #: so if you want to override it, place your value after the lines
-#: where the theme file is include dark-theme.conf
+#: where the theme file is include light-theme.conf
 
 cursor_shape block
 
@@ -1105,7 +1105,7 @@ confirm_os_window_close -1
 
 #: A template to render the tab title. The default just renders the
 #: title with optional symbols for bell and activity. If you wish to
-#: include dark-theme.conf
+#: include light-theme.conf
 #: Useful if you have shortcuts mapped for goto_tab N. If you prefer
 #: to see the index as a superscript, use {sup.index}. All data
 #: available is:
@@ -2595,6 +2595,6 @@ macos_option_as_alt no
 
 
 # BEGIN_KITTY_THEME
-# GitHub Light Colorblind
-include dark-theme.conf
+# fairyfloss
+include light-theme.conf
 # END_KITTY_THEME
