@@ -2,8 +2,9 @@
 
 KITTY_CONF="$HOME/.config/kitty/current-theme.conf"
 NVIM_INIT="$HOME/.config/nvim/init.lua"
+TMUX_CONF="$HOME/.config/tmux/.tmux.conf"
 
-# Resolve symbolic links for both files
+# Resolve symbolic links for all files
 if [ -L "$KITTY_CONF" ]; then
     KITTY_CONF=$(realpath "$KITTY_CONF")
 fi
@@ -12,22 +13,30 @@ if [ -L "$NVIM_INIT" ]; then
     NVIM_INIT=$(realpath "$NVIM_INIT")
 fi
 
+if [ -L "$TMUX_CONF" ]; then
+    TMUX_CONF=$(realpath "$TMUX_CONF")
+fi
+
 # Define the themes
 KITTY_DARK_THEME="include dark-theme.conf"
 KITTY_LIGHT_THEME="include light-theme.conf"
 NVIM_LIGHT_SCHEME="tokyonight-day"  # Replace with your actual light theme name
 NVIM_DARK_SCHEME="github_dark_colorblind"    # Replace with your actual dark theme name
+TMUX_LIGHT_FG="fg=white"
+TMUX_DARK_FG="fg=black"
 
 # Determine the current theme in Kitty
 if grep -q "$KITTY_LIGHT_THEME" "$KITTY_CONF"; then
     # Switch to dark mode
     sed -i '' "s|$KITTY_LIGHT_THEME|$KITTY_DARK_THEME|" "$KITTY_CONF"
     sed -i '' "s|colorscheme $NVIM_LIGHT_SCHEME|colorscheme $NVIM_DARK_SCHEME|" "$NVIM_INIT"
+    sed -i '' "s/$TMUX_LIGHT_FG/$TMUX_DARK_FG/g" "$TMUX_CONF"
     echo "Switched to dark mode."
 else
     # Switch to light mode
     sed -i '' "s|$KITTY_DARK_THEME|$KITTY_LIGHT_THEME|" "$KITTY_CONF"
     sed -i '' "s|colorscheme $NVIM_DARK_SCHEME|colorscheme $NVIM_LIGHT_SCHEME|" "$NVIM_INIT"
+    sed -i '' "s/$TMUX_DARK_FG/$TMUX_LIGHT_FG/g" "$TMUX_CONF"
     echo "Switched to light mode."
 fi
 
