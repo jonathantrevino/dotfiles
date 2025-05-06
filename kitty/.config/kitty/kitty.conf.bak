@@ -22,7 +22,7 @@ shell /bin/zsh
 #: <https://sw.kovidgoyal.net/kitty/kittens/choose-fonts/#font-spec-
 #: syntax>.
 
-font_size 16.0
+font_size 18.0
 
 #: Font size (in pts).
 
@@ -2594,6 +2594,6 @@ map ctrl+cmd+,   load_config_file
 
 
 # BEGIN_KITTY_THEME
-# zenwritten_dark
+# Flexoki (Dark)
 include current-theme.conf
 # END_KITTY_THEME
