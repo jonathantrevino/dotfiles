@@ -1,0 +1,2 @@
+# Ignore GPG keyring and sensitive files
+~/.gnupg/
