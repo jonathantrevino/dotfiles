@@ -1,7 +1,7 @@
 [user]
   name = 'Jonathan Trevino'
   email = 'yeahimjt+github@gmail.com'
-  signingkey = C42F8B10D6AA6B22 # Update signing key on new machines
+  signingkey = CA742B78133EA4E6  # Update signing key on new machines
 
 [core]
   compression = 9
