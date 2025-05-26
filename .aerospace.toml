@@ -15,6 +15,7 @@ after-startup-command = [
 ]
 
 
+
 # Notify Sketchybar about workspace change
 exec-on-workspace-change = ['/bin/bash', '-c',
   'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
@@ -73,6 +74,20 @@ automatically-unhide-macos-hidden-apps = false
     outer.top =        58
     outer.right =      10
 
+[[on-window-detected]]
+if.app-id = 'net.kovidgoyal.kitty'
+run = 'move-node-to-workspace C'
+
+[[on-window-detected]]
+if.app-id = 'com.google.Chrome'
+run = 'move-node-to-workspace B' 
+
+[[on-window-detected]]
+if.app-id = 'com.apple.Safari'
+run = 'move-node-to-workspace F' # mnemonics W - Web browser
+
+
+
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 # 'main' binding mode must be always presented
@@ -96,15 +111,30 @@ automatically-unhide-macos-hidden-apps = false
 
     # All possible commands: https://nikitabobko.github.io/AeroSpace/commands
 
-    # See: https://nikitabobko.github.io/AeroSpace/commands#exec-and-forget
-    # You can uncomment the following lines to open up terminal with alt + enter shortcut
-    # (like in i3)
-    # alt-enter = '''exec-and-forget osascript -e '
-    # tell application "Terminal"
-    #     do script
-    #     activate
-    # end tell'
-    # '''
+
+    # Open Kitty in a new window
+    alt-q = '''exec-and-forget osascript -e '
+    tell application "Kitty"
+        activate
+    end tell'
+    '''
+
+    # Open Google Chrome
+    alt-w = '''exec-and-forget osascript -e '
+    tell application "Google Chrome"
+        activate
+    end tell'
+    '''
+
+    # Open Safari
+    alt-e = '''exec-and-forget osascript -e '
+    tell application "Safari"
+        activate
+    end tell'
+    '''
+
+
+
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#layout
     alt-slash = 'layout tiles horizontal vertical'
