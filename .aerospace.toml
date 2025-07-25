@@ -97,8 +97,8 @@ if.app-id = 'com.google.Chrome'
 run = 'move-node-to-workspace B'
 
 [[on-window-detected]]
-if.app-id = 'com.apple.Safari'
-run = 'move-node-to-workspace F' # mnemonics W - Web browser
+if.app-id = 'company.thebrowser.Browser'
+run = 'move-node-to-workspace F'         # mnemonics W - Web browser
 
 
 # 'main' binding mode declaration
@@ -150,7 +150,7 @@ alt-w = '''exec-and-forget osascript -e '
 
 # Open Safari
 alt-e = '''exec-and-forget osascript -e '
-    tell application "Safari"
+    tell application "Arc"
         activate
     end tell'
     '''
