@@ -1,0 +1,10 @@
+
+# Ignore Neovim plugin directories
+nvim/pack/plugins/start/*
+nvim/pack/plugins/opt/*
+
+# Optional: ignore swap files, backup files, undo files
+*.swp
+*.swo
+*.bak
+*.undo

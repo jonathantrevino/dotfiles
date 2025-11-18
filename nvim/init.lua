@@ -99,40 +99,38 @@ end, { desc = "Grep notes" })
 
 
 -- =========================
--- LSP Setup
+-- Modern LSP Setup (v0.11+)
 -- =========================
-local lspconfig = safe_require("lspconfig")
-local cmp_nvim_lsp = safe_require("cmp_nvim_lsp")
-
-if lspconfig and cmp_nvim_lsp then
-  local capabilities = cmp_nvim_lsp.default_capabilities()
-  local on_attach = function(client, bufnr)
-    local opts = { noremap = true, silent = true, buffer = bufnr }
-    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-    vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
-    vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-    vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-    vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
-    vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format, opts)
-  end
-
-  local servers = {
-    "ts_ls",
-    "lua_ls",
-    "html",
-    "cssls",
-    "jsonls",
-    "tailwindcss",
-    "pyright",
-  }
-
-  for _, server in ipairs(servers) do
-    lspconfig[server].setup({
-      on_attach = on_attach,
-      capabilities = capabilities,
-    })
-  end
+local lspconfig_ok, lspconfig = pcall(require, "lspconfig")
+if not lspconfig_ok then
+  print("lspconfig not found")
+  return
 end
+
+local cmp_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+local capabilities = {}
+if cmp_ok then
+  capabilities = cmp_nvim_lsp.default_capabilities()
+end
+
+-- on_attach function
+local on_attach = function(client, bufnr)
+  local opts = { noremap = true, silent = true, buffer = bufnr }
+  vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+  vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+  vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+  vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+  vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
+  vim.keymap.set("n", "<leader>lf", function()
+    vim.lsp.buf.format({ async = true })
+  end, opts)
+end
+
+-- List of servers
+local servers = { "ts_ls", "lua_ls", "html", "cssls", "jsonls", "tailwindcss", "pyright" }
+
+
+vim.lsp.enable(servers)
 
 -- =========================
 -- LuaSnip Setup
