@@ -64,7 +64,7 @@ install_plugin "https://github.com/L3MON4D3/LuaSnip.git"
 install_plugin "https://github.com/saadparwaiz1/cmp_luasnip.git"
 install_plugin "https://github.com/epwalsh/obsidian.nvim.git"
 install_plugin "https://github.com/MeanderingProgrammer/render-markdown.nvim.git"
-
+install_plugin "https://github.com/rafamadriz/friendly-snippets.git"
 # -------------------------------------
 # 5. Copy Tomorrow-Night-Blue.vim into colors/
 # -------------------------------------

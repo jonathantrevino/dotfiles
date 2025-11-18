@@ -28,14 +28,6 @@ vim.opt.winborder = 'rounded'
 vim.keymap.set('n', '<leader>w', ':write<CR>')
 vim.keymap.set('i', 'jk', '<Esc>', { noremap = true })
 vim.opt.timeoutlen = 300
--- Format file
--- vim.keymap.set('n', '<leader>lf', function()
---   vim.lsp.buf.format({
---     filter = function(client)
---       return client.name == "null-ls"
---     end
---   })
--- end)
 
 -- Helper to safely require a plugin
 local function safe_require(name)
@@ -76,7 +68,7 @@ if not ok then
 end
 
 -- Optional: configure defaults (nice UI)
-require('telescope').setup{
+require('telescope').setup {
   defaults = {
     prompt_prefix = " ",
     selection_caret = " ",
@@ -97,104 +89,119 @@ vim.keymap.set('n', '<leader>fn', function()
   telescope.live_grep({ cwd = vim.fn.expand('~/workspace/notes') })
 end, { desc = "Grep notes" })
 
+-- =========================
+-- Modern-style LSP Setup
+-- =========================
+local augroup = vim.api.nvim_create_augroup("LspAttach", { clear = true })
+local map = vim.keymap.set
+
+local function setup_lsp()
+  -- Enable LSP servers
+  vim.lsp.enable({
+    "ts_ls",       -- TypeScript
+    "lua_ls",      -- Lua
+    "html",        -- HTML
+    "cssls",       -- CSS
+    "jsonls",      -- JSON
+    "tailwindcss", -- TailwindCSS
+    "pyright",     -- Python
+    "gopls",       -- Go
+    "zls",         -- Zig
+  })
+
+  -- Attach keymaps and completion when server attaches
+  vim.api.nvim_create_autocmd("LspAttach", {
+    group = augroup,
+    callback = function(ev)
+      local bufopts = { noremap = true, silent = true, buffer = ev.buf }
+
+      -- Normal keymaps
+      map("n", "gd", vim.lsp.buf.definition, bufopts)
+      map("n", "gr", vim.lsp.buf.references, bufopts)
+      map("n", "K", vim.lsp.buf.hover, bufopts)
+      map("n", "<leader>rn", vim.lsp.buf.rename, bufopts)
+      map("n", "<leader>ca", vim.lsp.buf.code_action, bufopts)
+      map("n", "<leader>lf", function()
+        vim.lsp.buf.format({ async = true })
+      end, bufopts)
+
+      -- Insert-mode manual completion
+      map("i", "<C-k>", vim.lsp.completion.get, bufopts)
+
+      -- Enable completion if supported
+      local client = assert(vim.lsp.get_client_by_id(ev.data.client_id))
+      local methods = vim.lsp.protocol.Methods
+      if client:supports_method(methods.textDocument_completion) then
+        vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
+      end
+    end,
+  })
+end
+
+-- Call the setup
+setup_lsp()
 
 -- =========================
--- Modern LSP Setup (v0.11+)
+-- LuaSnip + nvim-cmp Setup (React-friendly)
 -- =========================
-local lspconfig_ok, lspconfig = pcall(require, "lspconfig")
-if not lspconfig_ok then
-  print("lspconfig not found")
+local luasnip_ok, luasnip = pcall(require, "luasnip")
+if not luasnip_ok then
+  print("LuaSnip not found")
   return
 end
 
-local cmp_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-local capabilities = {}
-if cmp_ok then
-  capabilities = cmp_nvim_lsp.default_capabilities()
+-- Load Friendly Snippets
+require("luasnip.loaders.from_vscode").lazy_load({
+  paths = { "~/.config/nvim/snippets/friendly-snippets" },
+})
+
+-- Explicitly load React/JS/TS snippets
+require("luasnip.loaders.from_vscode").lazy_load({ include = { "javascript", "javascriptreact", "typescript", "typescriptreact" } })
+
+local cmp_ok, cmp = pcall(require, "cmp")
+if not cmp_ok then
+  print("nvim-cmp not found")
+  return
 end
 
--- on_attach function
-local on_attach = function(client, bufnr)
-  local opts = { noremap = true, silent = true, buffer = bufnr }
-  vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-  vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
-  vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-  vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-  vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
-  vim.keymap.set("n", "<leader>lf", function()
-    vim.lsp.buf.format({ async = true })
-  end, opts)
-end
-
--- List of servers
-local servers = { "ts_ls", "lua_ls", "html", "cssls", "jsonls", "tailwindcss", "pyright" }
-
-
-vim.lsp.enable(servers)
-
--- =========================
--- LuaSnip Setup
--- =========================
-local luasnip = safe_require("luasnip")
-if luasnip then
-  require("luasnip.loaders.from_vscode").lazy_load({
-    paths = { "~/.config/nvim/snippets/friendly-snippets" },
-  })
-end
-
--- =========================
--- nvim-cmp Setup
--- =========================
-local cmp = safe_require("cmp")
-if cmp and luasnip then
-  cmp.setup({
-    snippet = {
-      expand = function(args)
-        luasnip.lsp_expand(args.body)
-      end,
-    },
-    mapping = cmp.mapping.preset.insert({
-      ["<Tab>"] = cmp.mapping(function(fallback)
-        if cmp.visible() then
-          cmp.select_next_item()
-        elseif luasnip.expand_or_jumpable() then
-          luasnip.expand_or_jump()
-        else
-          fallback()
-        end
-      end, { "i", "s" }),
-      ["<S-Tab>"] = cmp.mapping(function(fallback)
-        if cmp.visible() then
-          cmp.select_prev_item()
-        elseif luasnip.jumpable(-1) then
-          luasnip.jump(-1)
-        else
-          fallback()
-        end
-      end, { "i", "s" }),
-      ["<CR>"] = cmp.mapping.confirm({ select = true }),
-      ["<C-Space>"] = cmp.mapping.complete(),
-    }),
-    sources = {
-      { name = "luasnip", keyword_length = 0 },
-      { name = "nvim_lsp" },
-      { name = "buffer" },
-    },
-    completion = {
-      autocomplete = { cmp.TriggerEvent.TextChanged, cmp.TriggerEvent.InsertEnter },
-    },
-    experimental = { ghost_text = true },
-  })
-
-  vim.keymap.set({ "i", "s" }, "<C-k>", function()
-    if luasnip.expand_or_jumpable() then
-      luasnip.expand_or_jump()
-    end
-  end, { silent = true })
-end
-
-
-
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      luasnip.lsp_expand(args.body)
+    end,
+  },
+  mapping = cmp.mapping.preset.insert({
+    ["<Tab>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+    ["<S-Tab>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+    ["<CR>"] = cmp.mapping.confirm({ select = true }),
+    ["<C-Space>"] = cmp.mapping.complete(),
+  }),
+  sources = cmp.config.sources({
+    { name = "luasnip", keyword_length = 0 },
+    { name = "nvim_lsp" },
+    { name = "buffer" },
+  }),
+  completion = {
+    autocomplete = { cmp.TriggerEvent.TextChanged, cmp.TriggerEvent.InsertEnter },
+  },
+  experimental = { ghost_text = true },
+})
 
 -- Open diagnostic float for current line
 vim.keymap.set("n", "<leader>d", function()
