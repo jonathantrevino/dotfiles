@@ -32,3 +32,12 @@ alias t='tmux attach -t dev || tmux new -s dev'
 
 # lua_ls
 # brew install lua-language-server
+
+# terraform
+# brew install hashicorp/tap/terraform-ls
+
+# typeScript, javaScript, jsx, and tsx files
+brew install typescript-language-server
+
+# html, css, json, and eslint diagnostics
+brew install vscode-langservers-extracted
