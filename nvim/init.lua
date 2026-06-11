@@ -21,6 +21,8 @@ vim.g.mapleader=" "
 vim.keymap.set("i", "jk", "<Esc>")
 vim.keymap.set("n", "<leader>c", ":nohlsearch<CR>")
 
+vim.keymap.set("n", "<leader>l", ":e<CR>") -- reload file for lsp
+
 -- Keep cursor centered when jumping half pages 
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
@@ -62,7 +64,15 @@ vim.pack.add{
 }
 
 -- 1. Setup your language servers
-vim.lsp.enable({"gopls", "lua_ls, tailwindcss", "terraform_ls", "html", "ts_ls", "cssls", "eslint"})
+vim.lsp.enable({"gopls", "lua_ls", "tailwindcss", "html", "ts_ls", "cssls", "eslint"})
+
+vim.lsp.config("terraformls", {
+    init_options = {
+        ignoreSingleFileWarning = true,
+    },
+})
+
+vim.lsp.enable("terraformls")
 
 -- 2. Global Diagnostic Shortcuts (Errors/Warnings)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev) -- Jump to previous error
