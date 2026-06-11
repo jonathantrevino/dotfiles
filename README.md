@@ -22,3 +22,13 @@ alias ld='lazydocker'
 alias dcu='docker compose up -d'
 alias dcd='docker compose down'
 alias t='tmux attach -t dev || tmux new -s dev'
+
+# Ensure language servers are installed:
+
+# go
+
+# tailwindcss
+# npm install -g @tailwindcss/language-server
+
+# lua_ls
+# brew install lua-language-server
